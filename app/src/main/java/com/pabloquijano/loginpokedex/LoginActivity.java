@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
-import android.util.Log;
+
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
@@ -27,6 +27,7 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity {
 
     private ApiInterface apiService;
+    private ApiClient apiClient;
     MaterialDialog progressDialog;
     @BindView(R.id.title)
     TextView title;
@@ -43,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         title.setTypeface(Singleton.getInstance(this).getFontSBold());
+        apiClient = new ApiClient(this);
     }
 
     @OnClick(R.id.btn_login)
@@ -69,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             progressDialog = Singleton.getInstance(getApplicationContext()).getProgressDialogDark(getString(R.string.logging_in), view.getContext());
             User user = new User(inputEmail.getText().toString(), inputPassword.getText().toString());
-            apiService = ApiClient.getClient().create(ApiInterface.class);
+            apiService = apiClient.getClient().create(ApiInterface.class);
             SharedPreferences pref = getApplicationContext().getSharedPreferences("PKXPref", 0); // 0 - for private mode
             final SharedPreferences.Editor editor = pref.edit();
             Call<User> call = apiService.signUp(user);

@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.swipeContainer)
     SwipeRefreshLayout swipeContainer;
     MaterialDialog progressDialog;
+    private ApiClient apiClient;
     private PokemonsAdapter pokemonsAdapter;
 
     @Override
@@ -53,12 +54,15 @@ public class MainActivity extends AppCompatActivity {
                 loadList(false);
             }
         });
+        apiClient = new ApiClient(this);
         loadList(true);
+
 
     }
 
     private void loadList(final boolean firstTime){
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        ApiInterface apiService = apiClient.getClient().create(ApiInterface.class);
+        ApiInterface apiService_C = apiClient.getCachedClient().create(ApiInterface.class);
         Call<Pokemon_response> call = apiService.getListPokemon();
         call.enqueue(new Callback<Pokemon_response>() {
 
@@ -66,11 +70,18 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<Pokemon_response> call, Response<Pokemon_response> response) {
                 Log.e("list", ""+response.toString());
                 if (response.code()==200){
-                    if (firstTime){
+                    if (firstTime || pokemonsAdapter==null){
                         pokemonsAdapter = new PokemonsAdapter(response.body().getResults(), MainActivity.this);
                         rvItems.setAdapter(pokemonsAdapter);
                         rvItems.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL,false));
-                        progressDialog.dismiss();
+                        if (swipeContainer.isRefreshing()){
+                            swipeContainer.setRefreshing(false);
+                            rvItems.setAlpha(1f);
+                            rvItems.setClickable(true);
+                        }else{
+                            progressDialog.dismiss();
+                        }
+
                     }else{
                         pokemonsAdapter.clear();
                         pokemonsAdapter.addAll(response.body().getResults());
