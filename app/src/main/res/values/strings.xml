@@ -4,4 +4,15 @@
     <string name="login_go_register">No account yet? Create one</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="error">Error</string>
+    <string name="ok">Ok</string>
+    <string name="wait">Wait</string>
+    <string name="logging_in">Logging in</string>
+    <string name="email_field_required">The email field is required</string>
+    <string name="password_field_required">The password field is required</string>
+    <string name="invalid_email">Invalid email</string>
+    <string name="error_password_length">Password must be of minimum 8 characters length</string>
+    <string name="logout">Log out</string>
+    <string name="cancel">Cancel</string>
+    <string name="logout_question">Do you want log out?</string>
 </resources>
