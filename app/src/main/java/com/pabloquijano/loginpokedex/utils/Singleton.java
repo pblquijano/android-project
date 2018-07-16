@@ -35,6 +35,18 @@ public class Singleton {
                 .title(R.string.error)
                 .typeface(font_sbold, font_regular)
                 .titleColorRes(R.color.red)
+                .contentColorRes(R.color.ColorPrimaryText)
+                .content(msg)
+                .cancelable(false)
+                .positiveText(R.string.ok)
+                .show();
+    }
+    public MaterialDialog getErrorDialogDark(String msg, Context context){
+
+        return new MaterialDialog.Builder(context)
+                .title(R.string.error)
+                .typeface(font_sbold, font_regular)
+                .titleColorRes(R.color.red)
                 .contentColorRes(R.color.colorPrimaryLight)
                 .positiveColorRes(R.color.white)
                 .content(msg)
@@ -44,6 +56,17 @@ public class Singleton {
     }
 
     public MaterialDialog getProgressDialog(String msg, Context context){
+        return new MaterialDialog.Builder(context)
+                .title(msg)
+                .typeface(font_sbold, font_regular)
+                .content(R.string.wait)
+                .titleColorRes(R.color.colorPrimary)
+                .contentColorRes(R.color.ColorPrimaryText)
+                .cancelable(false)
+                .progress(true, 0)
+                .show();
+    }
+    public MaterialDialog getProgressDialogDark(String msg, Context context){
         return new MaterialDialog.Builder(context)
                 .title(msg)
                 .typeface(font_sbold, font_regular)

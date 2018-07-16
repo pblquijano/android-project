@@ -65,9 +65,9 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         if (!isValid) {
-            Singleton.getInstance(LoginActivity.this).getErrorDialog(textError, view.getContext());
+            Singleton.getInstance(LoginActivity.this).getErrorDialogDark(textError, view.getContext());
         } else {
-            progressDialog = Singleton.getInstance(getApplicationContext()).getProgressDialog(getString(R.string.logging_in), view.getContext());
+            progressDialog = Singleton.getInstance(getApplicationContext()).getProgressDialogDark(getString(R.string.logging_in), view.getContext());
             User user = new User(inputEmail.getText().toString(), inputPassword.getText().toString());
             apiService = ApiClient.getClient().create(ApiInterface.class);
             SharedPreferences pref = getApplicationContext().getSharedPreferences("PKXPref", 0); // 0 - for private mode

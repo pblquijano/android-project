@@ -13,8 +13,8 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface ApiInterface{
-    @GET("/pokemon/?limit=150")
-    Call<Pokemon_response> getMap(@Query("origin") List<Pokemon_data> results);
+    @GET("/api/v2/pokemon/?limit=150")
+    Call<Pokemon_response> getListPokemon();
 
     @POST("/signup")
     Call<User> signUp(@Body User user);
