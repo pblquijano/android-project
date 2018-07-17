@@ -51,6 +51,8 @@ public class LoginActivity extends AppCompatActivity {
     public void onBtnLoginClicked(final View view) {
         String textError = "";
         boolean isValid = true;
+
+        //Fields Validation
         if (inputEmail.getText().toString().isEmpty() ){
             textError += getString(R.string.email_field_required)+".\n";
             isValid = false;
@@ -69,26 +71,34 @@ public class LoginActivity extends AppCompatActivity {
         if (!isValid) {
             Singleton.getInstance(LoginActivity.this).getErrorDialogDark(textError, view.getContext());
         } else {
+            //Shows Progress View
             progressDialog = Singleton.getInstance(getApplicationContext()).getProgressDialogDark(getString(R.string.logging_in), view.getContext());
+            //Prepares the user´s data to send
             User user = new User(inputEmail.getText().toString(), inputPassword.getText().toString());
             apiService = apiClient.getClient().create(ApiInterface.class);
             SharedPreferences pref = getApplicationContext().getSharedPreferences("PKXPref", 0); // 0 - for private mode
             final SharedPreferences.Editor editor = pref.edit();
+            //Calls the fake endpont for sign in
             Call<User> call = apiService.signUp(user);
             call.enqueue(new Callback<User>() {
                 @Override
                 public void onResponse(Call<User> call, Response<User> response) {
+                    //Saves the Sign in Token
                     editor.putString("pokedex_token",inputEmail.getText().toString());
                     editor.apply();
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    //Hides Progress View
                     progressDialog.dismiss();
                     finish();
                 }
 
                 @Override
                 public void onFailure(Call<User> call, Throwable t) {
+                    //Saves the Sign in Token
                     editor.putString("pokedex_token",inputEmail.getText().toString());
+                    editor.apply();
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    //Hides Progress View
                     progressDialog.dismiss();
                     finish();
                 }

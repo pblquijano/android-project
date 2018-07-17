@@ -44,17 +44,19 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("POKEDEX");
         ButterKnife.bind(this);
         rvItems.setHasFixedSize(true);
+        //Shows Progress View
         progressDialog = Singleton.getInstance(getApplicationContext()).getProgressDialog(getString(R.string.loading_data), MainActivity.this);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                // Your code to refresh the list here.
+                // Runs refresh the list.
                 rvItems.setAlpha(0.3f);
                 rvItems.setClickable(false);
                 loadList(false);
             }
         });
         apiClient = new ApiClient(this);
+        //Calls the api to get a pokemon list
         loadList(true);
 
 
@@ -62,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadList(final boolean firstTime){
         ApiInterface apiService = apiClient.getClient().create(ApiInterface.class);
-        ApiInterface apiService_C = apiClient.getCachedClient().create(ApiInterface.class);
         Call<Pokemon_response> call = apiService.getListPokemon();
         call.enqueue(new Callback<Pokemon_response>() {
 
@@ -71,20 +72,26 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("list", ""+response.toString());
                 if (response.code()==200){
                     if (firstTime || pokemonsAdapter==null){
+                        //Creates the recycler view adapter
                         pokemonsAdapter = new PokemonsAdapter(response.body().getResults(), MainActivity.this);
+                        //Sets adapter to the recycler view
                         rvItems.setAdapter(pokemonsAdapter);
                         rvItems.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL,false));
                         if (swipeContainer.isRefreshing()){
+                            //Reset the swipe refresh status.
                             swipeContainer.setRefreshing(false);
                             rvItems.setAlpha(1f);
                             rvItems.setClickable(true);
                         }else{
+                            //Hides Progress View
                             progressDialog.dismiss();
                         }
 
                     }else{
+                        //Reload the poemon list
                         pokemonsAdapter.clear();
                         pokemonsAdapter.addAll(response.body().getResults());
+                        //Reset the swipe refresh status.
                         swipeContainer.setRefreshing(false);
                         rvItems.setAlpha(1f);
                         rvItems.setClickable(true);
@@ -93,9 +100,11 @@ public class MainActivity extends AppCompatActivity {
                 }else{
                     if (firstTime){
                         Singleton.getInstance(MainActivity.this).getErrorDialog(response.message(), MainActivity.this);
+                        //Hides Progress View
                         progressDialog.dismiss();
                     }else{
                         Singleton.getInstance(MainActivity.this).getErrorDialog(response.message(), MainActivity.this);
+                        //Reset the swipe refresh status.
                         swipeContainer.setRefreshing(false);
                         rvItems.setAlpha(1f);
                         rvItems.setClickable(true);
@@ -124,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        //Inflates menu to show the log out button.
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
         return true;

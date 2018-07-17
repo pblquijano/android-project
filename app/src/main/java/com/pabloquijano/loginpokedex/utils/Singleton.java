@@ -21,6 +21,7 @@ public class Singleton {
         font_sbold = Typeface.createFromAsset(context.getAssets(), "Montserrat-SemiBold.otf");
     }
 
+    //Retuns Font Family
     public Typeface getFontRegular(){
         return font_regular;
     }
@@ -29,6 +30,7 @@ public class Singleton {
         return font_sbold;
     }
 
+    //Shows a Dialog Error
     public MaterialDialog getErrorDialog(String msg, Context context){
 
         return new MaterialDialog.Builder(context)
@@ -41,6 +43,8 @@ public class Singleton {
                 .positiveText(R.string.ok)
                 .show();
     }
+
+    //Shows a Dialog Error for Fark Theme
     public MaterialDialog getErrorDialogDark(String msg, Context context){
 
         return new MaterialDialog.Builder(context)
@@ -55,6 +59,7 @@ public class Singleton {
                 .show();
     }
 
+    //Shows Progress Dialog
     public MaterialDialog getProgressDialog(String msg, Context context){
         return new MaterialDialog.Builder(context)
                 .title(msg)
@@ -66,6 +71,8 @@ public class Singleton {
                 .progress(true, 0)
                 .show();
     }
+
+    //Shows Progress Dialog for Dark Theme
     public MaterialDialog getProgressDialogDark(String msg, Context context){
         return new MaterialDialog.Builder(context)
                 .title(msg)
@@ -78,6 +85,7 @@ public class Singleton {
                 .show();
     }
 
+    //Shows confirmation dialog
     public MaterialDialog.Builder getQuestionDialog(String title, String msg, Context context){
 
         return new MaterialDialog.Builder(context)
